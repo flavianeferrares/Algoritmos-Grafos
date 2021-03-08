@@ -33,6 +33,54 @@ class HeapMax:
         for i in range(self.nos - a):
             print(f'{self.heap[a]}', end=' ')
             a += 1
+        print('')
+
+    def remove_no(self):
+        x = self.heap[0]
+        self.heap[0] = self.heap[self.nos - 1]
+        self.heap.pop()
+        self.nos -= 1
+        p = 1
+        while True:
+            f = 2 * p
+            if f > self.nos: #filho a esquerda
+                break
+            if f+1 <= self.nos:  #filho a direita
+                if self.heap[f] > self.heap[f-1]: # < se for HeapMin
+                    f += 1
+
+            if self.heap[p-1] >= self.heap[f-1]:
+                break
+            else:
+                self.heap[f-1], self.heap[p-1] = self.heap[p-1], self.heap[f-1]
+                p = f
+
+        return x
+
+    def tamanho(self):
+        return self.nos
+
+    def maiorElemento(self):
+        if self.nos != 0:
+            return self.heap[0]
+        return 'Arvore vazia'
+
+    def filho_esquerda(self, i):
+        if self.nos >= 2 * i:
+            return self.heap[2 * i - 1]
+        return 'Não a filhos a esquerda!'
+
+    def filho_direita(self, i):
+        if self.nos >= 2 * i + 1:
+            return self.heap[2 * i]
+        return 'Não a filhos a direita!'
+
+    def pai(self, i):
+        return self.heap[i // 2]
+
+
+
+
 
 h = HeapMax()
 
@@ -46,4 +94,13 @@ h.adiciona_no(1)
 h.adiciona_no(2)
 h.adiciona_no(19)
 
+elementoMax = h.remove_no()
+print('Elemento retirado: ', elementoMax)
+
 h.mostra_heap()
+
+print(f'Tamanho: {h.tamanho()}')
+
+print(f'Filho esquerda de 17: {h.filho_esquerda(4)}')
+print(f'Filho a direita 17: {h.filho_direita(4)}')
+
